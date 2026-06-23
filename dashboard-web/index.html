@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel de Posgrados</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Panel institucional</p>
+          <h1>Seguimiento de programas de posgrado</h1>
+          <p class="hero-text">
+            Vista general organizada por Doctorado, Maestría y Médico Quirúrgica,
+            preparada para publicar en Netlify y actualizarse desde un archivo web.
+          </p>
+        </div>
+        <div class="hero-card">
+          <p>Última actualización</p>
+          <strong id="last-updated">Cargando...</strong>
+          <span>Datos listos para visualizar</span>
+        </div>
+      </header>
+
+      <nav class="tabs" aria-label="Programas">
+        <button class="tab-btn active" data-program="doctorado">Doctorado</button>
+        <button class="tab-btn" data-program="maestria">Maestría</button>
+        <button class="tab-btn" data-program="medico-quirurgica">Médico Quirúrgica</button>
+      </nav>
+
+      <section class="overview-grid">
+        <article class="panel panel-large">
+          <div class="panel-header">
+            <div>
+              <p class="panel-label">Resumen general</p>
+              <h2>Comparativo por programa</h2>
+            </div>
+          </div>
+          <canvas id="overviewChart" height="180"></canvas>
+        </article>
+
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="panel-label">Indicadores</p>
+              <h2>Totales del sistema</h2>
+            </div>
+          </div>
+          <div id="overviewMetrics" class="metric-list"></div>
+        </article>
+      </section>
+
+      <section class="panel panel-program">
+        <div class="panel-header program-header">
+          <div>
+            <p class="panel-label">Programa seleccionado</p>
+            <h2 id="programTitle">Doctorado</h2>
+            <p id="programSubtitle" class="muted"></p>
+          </div>
+        </div>
+
+        <div class="stats-grid" id="programStats"></div>
+
+        <div class="charts-grid">
+          <article class="panel-inner">
+            <div class="panel-header">
+              <div>
+                <p class="panel-label">Distribución</p>
+                <h3>Estado de los registros</h3>
+              </div>
+            </div>
+            <canvas id="statusChart" height="220"></canvas>
+          </article>
+
+          <article class="panel-inner">
+            <div class="panel-header">
+              <div>
+                <p class="panel-label">Tendencia</p>
+                <h3>Evolución anual</h3>
+              </div>
+            </div>
+            <canvas id="trendChart" height="220"></canvas>
+          </article>
+        </div>
+
+        <div class="cohort-section">
+          <article class="panel-inner cohort-panel">
+            <div class="panel-header">
+              <div>
+                <p class="panel-label">Cohortes</p>
+                <h3>Comparativo de cohortes vs desempeño</h3>
+              </div>
+            </div>
+            <div class="cohort-grid">
+              <div class="cohort-chart-wrap">
+                <canvas id="cohortChart" height="220"></canvas>
+              </div>
+              <div id="cohortSummary" class="cohort-summary"></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="table-card">
+          <div class="panel-header">
+            <div>
+              <p class="panel-label">Detalle</p>
+              <h3>Registros recientes</h3>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Estado</th>
+                  <th>Modalidad</th>
+                </tr>
+              </thead>
+              <tbody id="recordsTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
