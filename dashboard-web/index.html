@@ -31,11 +31,21 @@
         </div>
       </header>
 
-      <nav class="tabs" aria-label="Programas">
-        <button class="tab-btn active" data-program="doctorado">Doctorado</button>
-        <button class="tab-btn" data-program="maestria">Maestría</button>
-        <button class="tab-btn" data-program="medico-quirurgica">Médico Quirúrgica</button>
-      </nav>
+      <div class="selector-row">
+        <nav class="tabs" aria-label="Fuentes del archivo">
+          <button class="tab-btn active" data-program="DOCTORADO">DOCTORADO</button>
+          <button class="tab-btn" data-program="MAESTRIA">MAESTRIA</button>
+          <button class="tab-btn" data-program="MEDICO QUIRURGICA">MÉDICO QUIRÚRGICA</button>
+        </nav>
+        <label class="selector-wrap" for="programSelect">
+          <span>Ver otra fuente</span>
+          <select id="programSelect" class="program-select">
+            <option value="DOCTORADO">DOCTORADO</option>
+            <option value="MAESTRIA">MAESTRIA</option>
+            <option value="MEDICO QUIRURGICA">MÉDICO QUIRÚRGICA</option>
+          </select>
+        </label>
+      </div>
 
       <section class="overview-grid">
         <article class="panel panel-large">
@@ -65,6 +75,7 @@
             <p class="panel-label">Programa seleccionado</p>
             <h2 id="programTitle">Doctorado</h2>
             <p id="programSubtitle" class="muted"></p>
+            <p id="sourceLabel" class="muted source-label">Fuente: hoja DOCTORADO</p>
           </div>
         </div>
 

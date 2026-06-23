@@ -1,5 +1,6 @@
 let appData = null;
 let charts = {};
+let activeProgram = 'DOCTORADO';
 
 function handleResize() {
   Object.values(charts).forEach((chart) => {
@@ -9,12 +10,29 @@ function handleResize() {
   });
 }
 
+function getProgramEntries() {
+  if (appData?.sheets) {
+    return Object.entries(appData.sheets);
+  }
+  return Object.entries(appData?.programs || {});
+}
+
+function getProgramData(programKey) {
+  const entries = getProgramEntries();
+  const match = entries.find(([key]) => key.toUpperCase() === String(programKey).toUpperCase());
+  if (match) {
+    return match[1];
+  }
+  return appData?.programs?.[programKey] || null;
+}
+
 async function loadData() {
   const response = await fetch('data.json');
   appData = await response.json();
   document.getElementById('last-updated').textContent = appData.lastUpdated;
+  populateProgramSelect();
   renderOverview();
-  renderProgram('doctorado');
+  renderProgram(activeProgram);
   attachEvents();
   window.addEventListener('resize', handleResize);
 }
@@ -22,16 +40,47 @@ async function loadData() {
 function attachEvents() {
   document.querySelectorAll('.tab-btn').forEach((button) => {
     button.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach((btn) => btn.classList.remove('active'));
-      button.classList.add('active');
-      renderProgram(button.dataset.program);
+      setActiveProgram(button.dataset.program);
     });
   });
+
+  const select = document.getElementById('programSelect');
+  if (select) {
+    select.addEventListener('change', (event) => {
+      setActiveProgram(event.target.value);
+    });
+  }
+}
+
+function populateProgramSelect() {
+  const select = document.getElementById('programSelect');
+  if (!select) {
+    return;
+  }
+
+  const entries = getProgramEntries();
+  select.innerHTML = entries
+    .map(([key]) => `<option value="${key}">${key.replace(/\s+/g, ' ')}</option>`)
+    .join('');
+}
+
+function setActiveProgram(programKey) {
+  activeProgram = String(programKey).toUpperCase();
+  document.querySelectorAll('.tab-btn').forEach((button) => {
+    button.classList.toggle('active', button.dataset.program === activeProgram);
+  });
+
+  const select = document.getElementById('programSelect');
+  if (select) {
+    select.value = activeProgram;
+  }
+
+  renderProgram(activeProgram);
 }
 
 function renderOverview() {
-  const programs = Object.entries(appData.programs);
-  const labels = programs.map(([key, program]) => program.name);
+  const programs = getProgramEntries();
+  const labels = programs.map(([key, program]) => program.name || key);
   const totals = programs.map(([, program]) => program.summary.total);
   const context = document.getElementById('overviewChart');
 
@@ -72,7 +121,7 @@ function renderOverview() {
       const summary = program.summary;
       return `
         <div class="metric-card">
-          <strong>${program.name}</strong>
+          <strong>${program.name || key}</strong>
           <span>Total: ${summary.total}</span>
           <span>Activos: ${summary.activos}</span>
           <span>Egresados: ${summary.egresados}</span>
@@ -83,9 +132,24 @@ function renderOverview() {
 }
 
 function renderProgram(programKey) {
-  const program = appData.programs[programKey];
-  document.getElementById('programTitle').textContent = program.name;
-  document.getElementById('programSubtitle').textContent = program.description;
+  const program = getProgramData(programKey);
+  if (!program) {
+    return;
+  }
+
+  const title = document.getElementById('programTitle');
+  const subtitle = document.getElementById('programSubtitle');
+  const sourceLabel = document.getElementById('sourceLabel');
+
+  if (title) {
+    title.textContent = program.name || programKey;
+  }
+  if (subtitle) {
+    subtitle.textContent = program.description || 'Vista detallada del programa';
+  }
+  if (sourceLabel) {
+    sourceLabel.textContent = `Fuente: hoja ${programKey}`;
+  }
 
   document.getElementById('programStats').innerHTML = [
     { label: 'Total', value: program.summary.total },

@@ -1,7 +1,11 @@
 {
   "lastUpdated": "23/06/2026",
-  "programs": {
-    "doctorado": {
+  "source": {
+    "title": "Hojas del archivo",
+    "sheets": ["DOCTORADO", "MAESTRIA", "MEDICO QUIRURGICA"]
+  },
+  "sheets": {
+    "DOCTORADO": {
       "name": "Doctorado",
       "description": "Seguimiento académico y administrativo del programa de doctorado.",
       "summary": {
@@ -34,7 +38,7 @@
         { "nombre": "Sara Torres", "estado": "Activa", "modalidad": "Híbrida" }
       ]
     },
-    "maestria": {
+    "MAESTRIA": {
       "name": "Maestría",
       "description": "Panel para controlar la participación y seguimiento de la maestría.",
       "summary": {
@@ -67,7 +71,7 @@
         { "nombre": "Nora Díaz", "estado": "Activa", "modalidad": "Híbrida" }
       ]
     },
-    "medico-quirurgica": {
+    "MEDICO QUIRURGICA": {
       "name": "Médico Quirúrgica",
       "description": "Vista de seguimiento para el programa médico quirúrgico.",
       "summary": {
