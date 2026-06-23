@@ -127,6 +127,18 @@ body {
   min-height: 340px;
 }
 
+canvas {
+  display: block;
+  width: 100% !important;
+  max-width: 100%;
+}
+
+.panel-inner,
+.panel-large,
+.cohort-panel {
+  overflow: hidden;
+}
+
 .panel-header {
   display: flex;
   justify-content: space-between;
@@ -221,6 +233,10 @@ body {
 
 .cohort-chart-wrap {
   min-height: 260px;
+}
+
+.panel-inner {
+  min-height: 320px;
 }
 
 .cohort-summary {

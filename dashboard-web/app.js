@@ -1,6 +1,14 @@
 let appData = null;
 let charts = {};
 
+function handleResize() {
+  Object.values(charts).forEach((chart) => {
+    if (chart) {
+      chart.resize();
+    }
+  });
+}
+
 async function loadData() {
   const response = await fetch('data.json');
   appData = await response.json();
@@ -8,6 +16,7 @@ async function loadData() {
   renderOverview();
   renderProgram('doctorado');
   attachEvents();
+  window.addEventListener('resize', handleResize);
 }
 
 function attachEvents() {
@@ -49,6 +58,12 @@ function renderOverview() {
       plugins: { legend: { display: false } },
       scales: { y: { beginAtZero: true } },
     },
+  });
+
+  requestAnimationFrame(() => {
+    if (charts.overview) {
+      charts.overview.resize();
+    }
   });
 
   const metrics = document.getElementById('overviewMetrics');
@@ -112,6 +127,12 @@ function renderStatusChart(program) {
     },
     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } },
   });
+
+  requestAnimationFrame(() => {
+    if (charts.status) {
+      charts.status.resize();
+    }
+  });
 }
 
 function renderTrendChart(program) {
@@ -134,6 +155,12 @@ function renderTrendChart(program) {
       ],
     },
     options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } },
+  });
+
+  requestAnimationFrame(() => {
+    if (charts.trend) {
+      charts.trend.resize();
+    }
   });
 }
 
@@ -166,6 +193,12 @@ function renderCohortChart(program) {
       plugins: { legend: { position: 'bottom' } },
       scales: { y: { beginAtZero: true, max: 100 } },
     },
+  });
+
+  requestAnimationFrame(() => {
+    if (charts.cohort) {
+      charts.cohort.resize();
+    }
   });
 }
 
